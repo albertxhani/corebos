@@ -9,15 +9,17 @@
 
 // Show stock or not
 var hide_stock = 'no';
-ExecuteFunctions('ismoduleactive','checkmodule=Products').then(function (response) {
-	var obj = JSON.parse(response);
-	if (obj.isactive == true) {
+document.addEventListener('DOMContentLoaded', function(event) {
+	ExecuteFunctions('ismoduleactive', 'checkmodule=Products').then(function (response) {
+		var obj = JSON.parse(response);
+		if (obj.isactive == true) {
+			hide_stock = 'no';
+		} else {
+			hide_stock = 'yes';
+		}
+	}, function (error) {
 		hide_stock = 'no';
-	} else {
-		hide_stock = 'yes';
-	}
-}, function (error) {
-	hide_stock = 'no';
+	});
 });
 
 function set_return(product_id, product_name) {
@@ -40,11 +42,11 @@ function set_return_specific(product_id, product_name) {
 	window.opener.document.EditView.submit();
 }
 
-function add_data_to_relatedlist(entity_id,recordid) {
+function add_data_to_relatedlist(entity_id, recordid) {
 	opener.document.location.href='index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid='+entity_id+'&parentid='+recordid;
 }
 
-function set_return_formname_specific(formname,product_id, product_name) {
+function set_return_formname_specific(formname, product_id, product_name) {
 	window.opener.document.EditView1.quote_name.value = product_name;
 	window.opener.document.EditView1.quote_id.value = product_id;
 }
@@ -59,7 +61,7 @@ function set_return_todo(product_id, product_name) {
 	}
 }
 
-function QuotessetValueFromCapture(recordid,value,target_fieldname) {
+function QuotessetValueFromCapture(recordid, value, target_fieldname) {
 	if (target_fieldname=='tandc') {
 		var url = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=tandc&getFieldValuesFrom='+recordid;
 		jQuery.ajax({
